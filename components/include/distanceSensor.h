@@ -7,8 +7,8 @@ typedef struct
 {
     int distance;
     char* sensorID;
-    uint8_t trig_pin;
-    uint8_t echo_pin;
+    uint32_t trig_pin;
+    uint32_t echo_pin;
     char* nameSensor;
 }Distance_Sensor;
 
