@@ -15,13 +15,15 @@
 
 #include "esp_system.h"
 // #include "esp_spi_flash.h"
-
+#define GPIO_TRIG 8
+#define GPIO_ECHO 7
+    
 QueueHandle_t xQueue;
 Distance_Sensor HRCSensor =
 {
     .sensorID = "1",
-    .trig_pin = GPIO_Pin_8,
-    .echo_pin = GPIO_Pin_7,
+    .trig_pin = GPIO_TRIG,
+    .echo_pin = GPIO_ECHO,
     .nameSensor = "HRC04"
 };
 
@@ -77,12 +79,16 @@ void app_main()
 {
     esp_err_t pins_config;
     xQueue = xQueueCreate( 5, sizeof( int32_t));
-    pins_config = initialize_sensor_pin(&HRCSensor);
 
+    //initializing pins 
+    pins_config = initialize_sensor_pin(&HRCSensor);
     if (pins_config != ESP_OK)
     {
         printf("config for pins unsuccessful... Please try again");
     }
+    else if(pins_config == ESP_OK)
+        printf("config pins succesful ... Continue to integrate the system")
+
     if(xQueue != NULL)
     {
         xTaskCreate(vSenderTask, "Sender1" , 1000, (void * ) 100, 1, NULL);
