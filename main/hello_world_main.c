@@ -10,11 +10,20 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
+#include "distanceSensor.h"
+#include "driver/gpio.h"
 
 #include "esp_system.h"
 // #include "esp_spi_flash.h"
 
 QueueHandle_t xQueue;
+Distance_Sensor HRCSensor =
+{
+    .sensorID = "1",
+    .trig_pin = GPIO_Pin_8,
+    .echo_pin = GPIO_Pin_7,
+    .nameSensor = "HRC04"
+};
 
 static void  vSenderTask(void *pvParameters)
 {
@@ -66,9 +75,14 @@ static void vReceiverTask(void *pvParameters)
 
 void app_main()
 {
-
+    esp_err_t pins_config;
     xQueue = xQueueCreate( 5, sizeof( int32_t));
+    pins_config = initialize_sensor_pin(&HRCSensor);
 
+    if (pins_config != ESP_OK)
+    {
+        printf("config for pins unsuccessful... Please try again");
+    }
     if(xQueue != NULL)
     {
         xTaskCreate(vSenderTask, "Sender1" , 1000, (void * ) 100, 1, NULL);
