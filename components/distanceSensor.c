@@ -1,5 +1,6 @@
 #include "distanceSensor.h"
 #include "driver/gpio.h"
+#include "esp_log.h"
 
 int initialize_sensor_pin(Distance_Sensor *Sensor)
 {
