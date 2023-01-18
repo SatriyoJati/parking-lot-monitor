@@ -1,5 +1,4 @@
-# Hello World Example
+# Parking Lot Example Code
 
-Starts a FreeRTOS task to print "Hello World"
+Using esp8266 and Ultrasonic sensor to design parking lot monitoring system
 
-See the README.md file in the upper level 'examples' directory for more information about examples.
