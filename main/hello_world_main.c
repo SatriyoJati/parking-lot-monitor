@@ -1,11 +1,3 @@
-/* Hello World Example
-
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-*/
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -19,6 +11,7 @@
 #define GPIO_ECHO 7
     
 QueueHandle_t xQueue;
+
 Distance_Sensor HRCSensor =
 {
     .sensorID = "1",
@@ -26,6 +19,23 @@ Distance_Sensor HRCSensor =
     .echo_pin = GPIO_ECHO,
     .nameSensor = "HRC04"
 };
+
+static void vSensorInputTask(void *pvParameters)
+{   
+    xEcho_TimeStamp = xQueueCreate(15, sizeof(Distanc_Sensor));
+    xTrigger_Command = xQueueCreate(10, sizeof(Distance_Sensor));
+
+    for(;;)
+    {
+        send_trigger_command(pvParameters);
+        vTaskDelay(pdMS_TO_TICKS(10));
+        BaseType_t status = xQueueReceive(xTrigger_Command) 
+        if (status== pdPASS)
+        {
+            while (gpio_)
+        }
+    }
+}
 
 static void  vSenderTask(void *pvParameters)
 {
