@@ -2,7 +2,7 @@
 #include "driver/gpio.h"
 #include "esp_log.h"
 
-int initialize_sensor_pin(Distance_Sensor *Sensor)
+esp_err_t initialize_sensor_pin(Distance_Sensor *Sensor)
 {
     printf("Configuring the gpio pins for one sensor");
     esp_err_t status_config_echo_pin;
@@ -25,7 +25,30 @@ int initialize_sensor_pin(Distance_Sensor *Sensor)
     return ESP_FAIL;
 }
 
-// int calculate_distance(Distance_Sensor *input)
-// {
-//     return 0;
-// }
+esp_err_t send_trigger_command(Distance_Sensor *Sensor)
+{
+    gpio_set_level(Sensor->trig_pin, 1);
+    vTaskDelay(pdMS_TO_TICKS(10));
+    gpio_set_level(Sensor->trig_pin, 0);
+    xStatus = xQueueSendToBack(xTrigger_Command, Sensor->sensorID, 0);
+}
+
+int calculate_distance(Distance_Sensor *Sensor)
+{
+    //Check available for interrupt 
+    esp_err_t checkpinInterupt;
+    checkpinInterupt = gpio_set_intr_enable(Sensor -> echo_pin );
+    
+    //if no interupt :
+    if (checkpinInterupt != ESP_OK)
+    {
+
+    }
+    else
+    {
+
+    }
+    //else if interupt :
+    
+    return 0;
+}
